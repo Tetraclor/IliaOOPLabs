@@ -19,7 +19,11 @@ namespace Database
         private string connectionString;
         private string querySaveFile = "SqlQuery.txt";
 
-        private string sampleQuery = "SELECT * FROM Клиенты";
+        private string sampleQuery = @"SELECT *
+FROM Клиенты AS К LEFT JOIN Заказы AS З
+ON К.[Код клиента] = З.[Код клиента]
+WHERE К.[Город]= 'Тверь'
+ORDER BY З.[Дата заказа] DESC";
 
         public Form1()
         {
@@ -37,6 +41,8 @@ namespace Database
         {
             if (File.Exists(querySaveFile))
                 SqlQueryTextBox.Text = File.ReadAllText(querySaveFile);
+            else
+                SqlQueryTextBox.Text = sampleQuery;
 
             var sqlDataAdapter = new SqlDataAdapter();
             var sampleDataSet = new sampleDataSet();
